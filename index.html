@@ -6,20 +6,19 @@
         <title>FiveM DUI UI</title>
         <style>
             body {
-                margin: 100px;
+                margin: 300px 300px;
+                font-family: Courier, monospace;
             }
             #container {
-                width: 300px;
+                width: 370px;
                 border: 1px solid black;
-                overflow-y: auto; /* Ermöglicht das Scrollen */
             }
-
             .item {
-                height: 25px;
-                padding: 10px;
-                background-color: rgb(24, 119, 28);
-                border: 1px solid #000000;
-                transition: background-color 0.3s; /* Weicher Übergang */
+                display: flex;
+                align-items: center;
+                padding: 15px;
+                background-color: rgb(95, 97, 95);
+                transition: background-color 0.3s;
             }
 
             .highlighted {
@@ -29,11 +28,11 @@
     </head>
     <body>
         <div id="container">
-            <div class="item">Option 1</div>
-            <div class="item">Option 2</div>
-            <div class="item">Option 3</div>
-            <div class="item">Option 4</div>
-            <div class="item">Option 5</div>
+            <div class="item">Player</div>
+            <div class="item">Online</div>
+            <div class="item">Vehicle</div>
+            <div class="item">Combat</div>
+            <div class="item">Visual</div>
         </div>
 
         <script>
