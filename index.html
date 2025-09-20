@@ -8,6 +8,7 @@
             #container {
                 width: 300px;
                 border: 1px solid black;
+                overflow-y: auto; /* Ermöglicht das Scrollen */
             }
 
             .item {
@@ -15,6 +16,11 @@
                 padding: 10px;
                 background-color: lightgray;
                 border: 1px solid #b99a9a;
+                transition: background-color 0.3s; /* Weicher Übergang */
+            }
+
+            .highlighted {
+                background-color: #ffd700; /* Goldene Farbe für Hervorhebung */
             }
         </style>
     </head>
@@ -28,21 +34,44 @@
         </div>
 
         <script>
-            // Listen for messages sent from the Lua script
+            let currentIndex = 0; // Start-Index für die hervorgehobene Option
+
+            // Funktion, um die aktuelle Option zu markieren
+            function highlightCurrentOption() {
+                const items = document.querySelectorAll(".item");
+                // Entferne die Hervorhebung von allen Optionen
+                items.forEach((item) => item.classList.remove("highlighted"));
+
+                // Füge die Hervorhebung der aktuellen Option hinzu
+                items[currentIndex].classList.add("highlighted");
+            }
+
+            // Funktion, um nach unten zu scrollen und die Option zu wechseln
+            function moveToNextOption() {
+                const container = document.getElementById("container");
+                const items = document.querySelectorAll(".item");
+                const totalItems = items.length;
+
+                // Scrollt den Container nach unten
+                container.scrollTop += items[currentIndex].offsetHeight;
+
+                // Ändere den Index zur nächsten Option
+                currentIndex = (currentIndex + 1) % totalItems; // Zirkuliert bei der letzten Option zurück zur ersten
+
+                // Markiere die neue Option
+                highlightCurrentOption();
+            }
+
+            // Listener für Nachrichten vom Lua-Script (über FiveM)
             window.addEventListener("message", function (event) {
+                console.log("Nachricht empfangen: ", event.data); // Debugging
                 if (event.data.type === "moveDown") {
-                    moveToNextOption();
+                    moveToNextOption(); // Rufe die Funktion zum Weiterschalten auf
                 }
             });
 
-            // Move the UI to the next option (e.g., scroll down the container)
-            function moveToNextOption() {
-                const container = document.getElementById("container");
-                const firstItem = container.querySelector(".item"); // Get the first option
-
-                // Optionally, move down by adjusting the scroll position
-                container.scrollTop += firstItem.offsetHeight; // Scroll down by one item height
-            }
+            // Initiale Hervorhebung der ersten Option
+            highlightCurrentOption();
         </script>
     </body>
 </html>
