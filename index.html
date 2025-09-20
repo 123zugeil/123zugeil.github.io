@@ -14,6 +14,8 @@
             #container {
                 width: 370px;
                 border: 1px solid black;
+                height: 200px; /* Fixe Höhe für Scrollen */
+                overflow-y: scroll;
             }
             .item {
                 display: flex;
@@ -70,11 +72,11 @@
                 const items = document.querySelectorAll(".item");
                 const totalItems = items.length;
 
-                // Scrollt den Container nach unten
+                // Scrollt den Container nach oben
                 container.scrollTop -= items[currentIndex].offsetHeight;
 
                 // Ändere den Index zur nächsten Option
-                currentIndex = (currentIndex - 1) % totalItems; // Zirkuliert bei der letzten Option zurück zur ersten
+                currentIndex = (currentIndex - 1 + totalItems) % totalItems; // Zirkuliert bei der ersten Option zurück zur letzten
 
                 // Markiere die neue Option
                 highlightCurrentOption();
@@ -86,12 +88,15 @@
                 if (event.data.type === "moveDown") {
                     moveToNextOptionDown(); // Rufe die Funktion zum Weiterschalten auf
                 }
-            });
-
-            window.addEventListener("message", function (event) {
-                console.log("Nachricht empfangen: ", event.data);
                 if (event.data.type === "moveUp") {
                     moveToNextOptionUp(); // Rufe die Funktion zum Weiterschalten auf
+                }
+                if (event.data.type === "openMenu") {
+                    document.body.style.display = "block"; // Menü sichtbar machen
+                    highlightCurrentOption(); // Erste Option hervorheben
+                }
+                if (event.data.type === "closeMenu") {
+                    document.body.style.display = "none"; // Menü verstecken
                 }
             });
 
@@ -100,3 +105,4 @@
         </script>
     </body>
 </html>
+
