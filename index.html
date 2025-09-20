@@ -50,7 +50,7 @@
             }
 
             // Funktion, um nach unten zu scrollen und die Option zu wechseln
-            function moveToNextOption() {
+            function moveToNextOptionDown() {
                 const container = document.getElementById("container");
                 const items = document.querySelectorAll(".item");
                 const totalItems = items.length;
@@ -65,11 +65,33 @@
                 highlightCurrentOption();
             }
 
+            function moveToNextOptionUp() {
+                const container = document.getElementById("container");
+                const items = document.querySelectorAll(".item");
+                const totalItems = items.length;
+
+                // Scrollt den Container nach unten
+                container.scrollTop -= items[currentIndex].offsetHeight;
+
+                // Ändere den Index zur nächsten Option
+                currentIndex = (currentIndex - 1) % totalItems; // Zirkuliert bei der letzten Option zurück zur ersten
+
+                // Markiere die neue Option
+                highlightCurrentOption();
+            }
+
             // Listener für Nachrichten vom Lua-Script (über FiveM)
             window.addEventListener("message", function (event) {
                 console.log("Nachricht empfangen: ", event.data); // Debugging
                 if (event.data.type === "moveDown") {
-                    moveToNextOption(); // Rufe die Funktion zum Weiterschalten auf
+                    moveToNextOptionDown(); // Rufe die Funktion zum Weiterschalten auf
+                }
+            });
+
+            window.addEventListener("message", function (event) {
+                console.log("Nachricht empfangen: ", event.data);
+                if (event.data.type === "moveUp") {
+                    moveToNextOptionUp(); // Rufe die Funktion zum Weiterschalten auf
                 }
             });
 
